@@ -121,5 +121,9 @@ sed -i 's|admin\\|admin\\/services\\|g' feeds/luci/applications/luci-app-dockerm
 # 取消对 samba4 的菜单调整
 # sed -i '/samba4/s/^/#/' package/lean/default-settings/files/zzz-default-settings
 
+# 修复 vim-fuller 缺失 libsodium 依赖的问题
+sed -i 's/DEPENDS:=/DEPENDS:=+libsodium /' feeds/packages/utils/vim/Makefile
+echo "CONFIG_PACKAGE_libsodium=y" >> .config
+
 ./scripts/feeds update -a
 ./scripts/feeds install -a
