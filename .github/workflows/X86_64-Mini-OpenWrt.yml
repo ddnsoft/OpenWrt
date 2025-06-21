@@ -19,7 +19,7 @@ env:
 
 jobs:
   Build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Checkout
@@ -54,6 +54,15 @@ jobs:
         docker-images: true
         large-packages: true
         swap-storage: true
+
+    - name: Aggressive Space Cleanup
+      run: |
+         sudo rm -rf /usr/share/dotnet /etc/apt/sources.list.d /usr/local/lib/android $AGENT_TOOLSDIRECTORY || true
+         sudo docker image prune -af || true
+         sudo apt-get autoremove -y || true
+         sudo apt-get clean || true
+         sudo rm -rf /opt/ghc /usr/local/share/boost /usr/local/lib/android /usr/share/swift
+         df -hT
 
     - name: Initialization Environment
       env:
@@ -101,6 +110,14 @@ jobs:
         ln -s /mnt/staging_dir staging_dir
         ln -s /mnt/dl dl
         ls -lh
+
+    - name: Cache downloads
+      uses: actions/cache@v3
+      with:
+        path: openwrt/dl
+        key: ${{ runner.os }}-openwrt-dl-${{ hashFiles('**/.config') }}
+        restore-keys: |
+          ${{ runner.os }}-openwrt-dl-
 
     - name: Generate Variables
       run: |
