@@ -71,6 +71,10 @@ jobs:
       run: |
         #docker rmi $(docker images -q)
         df -hT
+        # add
+        sudo rm -rf /opt/ghc /usr/local/share/powershell /usr/lib/jvm /usr/share/dotnet /usr/local/lib/android
+        sudo rm -rf /usr/local/lib/node_modules /opt/hostedtoolcache /usr/local/share/boost
+        # end
         sudo rm -rf /usr/share/dotnet /etc/apt/sources.list.d /usr/local/lib/android $AGENT_TOOLSDIRECTORY
         sudo -E apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* powershell openjdk* mongodb* moby* || true
         sudo -E apt-get -y update
