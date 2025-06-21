@@ -86,19 +86,21 @@ jobs:
         COMMIT_HASH=$(git show -s --date=short --format="hash: %H")
         echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
 
-    - name: Link build dirs to /mnt to save space
+    - name: Prepare /mnt for heavy directories
       run: |
-        echo "Checking /mnt availability..."
-        df -hT /mnt
-        cd $GITHUB_WORKSPACE/openwrt
-        # 将大目录软链接到/mnt，释放主盘空间
-        for dir in dl build_dir staging_dir; do
-          sudo rm -rf $dir
-          sudo mkdir -p /mnt/openwrt/$dir
-          ln -sf /mnt/openwrt/$dir $dir
-        done
-        echo "Linking complete:"
-        ls -l | grep -E 'dl|build_dir|staging_dir'
+        echo "🧹 Cleaning and preparing /mnt..."
+        sudo rm -rf /mnt/build_dir /mnt/staging_dir /mnt/dl
+        mkdir -p /mnt/build_dir /mnt/staging_dir /mnt/dl
+        df -hT
+
+    - name: Move heavy build directories to /mnt to save disk space
+      run: |
+        echo "📁 Moving large directories to /mnt to free up space..."
+        rm -rf build_dir staging_dir dl
+        ln -s /mnt/build_dir build_dir
+        ln -s /mnt/staging_dir staging_dir
+        ln -s /mnt/dl dl
+        ls -lh
 
     - name: Generate Variables
       run: |
