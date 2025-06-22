@@ -64,7 +64,16 @@ jobs:
         docker-images: true
         large-packages: true
         swap-storage: true
-
+        
+    - name: Aggressive Space Cleanup
+      run: |
+         sudo rm -rf /usr/share/dotnet /etc/apt/sources.list.d /usr/local/lib/android $AGENT_TOOLSDIRECTORY || true
+         sudo docker image prune -af || true
+         sudo apt-get autoremove -y || true
+         sudo apt-get clean || true
+         sudo rm -rf /opt/ghc /usr/local/share/boost /usr/local/lib/android /usr/share/swift
+         df -hT
+         
     - name: Initialization Environment
       env:
         DEBIAN_FRONTEND: noninteractive
@@ -105,17 +114,25 @@ jobs:
       run: |
         echo "🧹 Cleaning and preparing /mnt..."
         sudo rm -rf /mnt/build_dir /mnt/staging_dir /mnt/dl
-        mkdir -p /mnt/build_dir /mnt/staging_dir /mnt/dl
+        sudo mkdir -p /mnt/build_dir /mnt/staging_dir /mnt/dl
         df -hT
 
     - name: Move heavy build directories to /mnt to save disk space
       run: |
         echo "📁 Moving large directories to /mnt to free up space..."
         rm -rf build_dir staging_dir dl
-        ln -s /mnt/build_dir build_dir
-        ln -s /mnt/staging_dir staging_dir
-        ln -s /mnt/dl dl
+        sudo ln -sf /mnt/build_dir build_dir
+        sudo ln -sf /mnt/staging_dir staging_dir
+        sudo ln -sf /mnt/dl dl
         ls -lh
+
+    - name: Cache downloads
+      uses: actions/cache@v3
+      with:
+        path: openwrt/dl
+        key: ${{ runner.os }}-openwrt-dl-${{ hashFiles('**/.config') }}
+        restore-keys: |
+          ${{ runner.os }}-openwrt-dl-
 
     - name: Generate Variables
       id: variable
