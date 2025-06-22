@@ -99,16 +99,16 @@ jobs:
       run: |
         echo "🧹 Cleaning and preparing /mnt..."
         sudo rm -rf /mnt/build_dir /mnt/staging_dir /mnt/dl
-        mkdir -p /mnt/build_dir /mnt/staging_dir /mnt/dl
+        sudo mkdir -p /mnt/build_dir /mnt/staging_dir /mnt/dl
         df -hT
 
     - name: Move heavy build directories to /mnt to save disk space
       run: |
         echo "📁 Moving large directories to /mnt to free up space..."
         rm -rf build_dir staging_dir dl
-        ln -s /mnt/build_dir build_dir
-        ln -s /mnt/staging_dir staging_dir
-        ln -s /mnt/dl dl
+        sudo ln -sf /mnt/build_dir build_dir
+        sudo ln -sf /mnt/staging_dir staging_dir
+        sudo ln -sf /mnt/dl dl
         ls -lh
 
     - name: Cache downloads
