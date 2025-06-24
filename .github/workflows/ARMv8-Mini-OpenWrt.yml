@@ -126,14 +126,6 @@ jobs:
         sudo ln -sf /mnt/dl dl
         ls -lh
 
-    - name: Cache downloads
-      uses: actions/cache@v3
-      with:
-        path: openwrt/dl
-        key: ${{ runner.os }}-openwrt-dl-${{ hashFiles('**/.config') }}
-        restore-keys: |
-          ${{ runner.os }}-openwrt-dl-
-
     - name: Generate Variables
       id: variable
       run: |
