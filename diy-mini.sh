@@ -127,3 +127,9 @@ echo "CONFIG_PACKAGE_libsodium=y" >> .config
 
 ./scripts/feeds update -a
 ./scripts/feeds install -a
+
+# 自动搜索并删除 autosamba 冲突文件
+for smb_file in $(find feeds -type f -path "*/autosamba/files/etc/hotplug.d/block/20-smb"); do
+    echo "🩵 修复冲突：删除 $smb_file"
+    rm -f "$smb_file"
+done
