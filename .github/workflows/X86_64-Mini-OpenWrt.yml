@@ -163,10 +163,10 @@ jobs:
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
-    - name: Fix autosamba & samba4 conflict (pre-compile)
+    - name: Fix autosamba & samba4 conflict
       run: |
         cd $OPENWRT_PATH
-        echo "🩵 检查并删除 autosamba 的 20-smb 冲突文件（编译前阶段）..."
+        echo "🩵 检查并删除 autosamba 的 20-smb 冲突文件..."
         find package/ feeds/ -type f -name "20-smb" | grep "/autosamba/" | while read -r smb_file; do
             echo "🩵 删除冲突文件: $smb_file"
             rm -f "$smb_file"
