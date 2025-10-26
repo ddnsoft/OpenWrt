@@ -128,9 +128,9 @@ echo "CONFIG_PACKAGE_libsodium=y" >> .config
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
-# 自动搜索并删除 autosamba 冲突文件（智能匹配路径）
-echo "🔍 正在检查 autosamba 是否存在冲突文件..."
-for smb_file in $(find feeds -type f -name "20-smb" | grep "autosamba"); do
-    echo "🩵 修复冲突：删除 $smb_file"
+# --- 强制删除 autosamba 与 samba4 冲突文件（通杀版）---
+echo "🩵 强制检查并删除 autosamba 的 20-smb 冲突文件..."
+find feeds/ -type f -name "20-smb" | grep "/autosamba/" | while read -r smb_file; do
+    echo "🩵 删除冲突文件: $smb_file"
     rm -f "$smb_file"
 done
