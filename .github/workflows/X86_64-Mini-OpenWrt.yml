@@ -163,16 +163,6 @@ jobs:
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
-    - name: Fix autosamba & samba4 conflict
-      run: |
-        cd $OPENWRT_PATH
-        echo "🩵 重命名 autosamba 的 20-smb 防止与 samba4 冲突..."
-        find package/ feeds/ -type f -name "20-smb" | grep "/autosamba/" | while read -r smb_file; do
-            echo "🩵 重命名冲突文件: $smb_file -> ${smb_file}.bak"
-            mv -f "$smb_file" "${smb_file}.bak"
-        done
-        echo "✅ autosamba 冲突文件已重命名，准备开始编译。"
-
     - name: Compile Firmware
       id: compile
       run: |
