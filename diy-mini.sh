@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# 修复 autosamba 与 samba4 冲突问题（Lean 源专用补丁）
+echo "🩵 移除 autosamba 并取消 default-settings 中的依赖..."
+rm -rf package/lean/autosamba feeds/luci/applications/autosamba
+sed -i 's/+autosamba //g' package/lean/default-settings/Makefile
+
 # 修改默认IP
 # sed -i 's/192.168.1.1/10.0.0.1/g' package/base-files/files/bin/config_generate
 
