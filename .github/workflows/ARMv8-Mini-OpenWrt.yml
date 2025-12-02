@@ -286,6 +286,21 @@ jobs:
         echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "DATE1=$(date +"%y.%m.%d")" >> $GITHUB_ENV
 
+    - name: Debug show rootfs path
+      if: steps.download.outputs.status == 'success'
+      run: |
+        echo "当前工作目录："
+        pwd
+        echo
+        echo "列出当前目录："
+        ls -al
+        echo
+        echo "递归查看 openwrt/bin/targets 目录："
+        ls -R openwrt/bin || echo "openwrt/bin 不存在"
+        echo
+        echo "用 find 搜索 rootfs.tar.gz："
+        find . -maxdepth 6 -type f -name "*rootfs.tar.gz" -print || echo "未找到 rootfs.tar.gz"
+
     - name: Package OpenWrt Firmware
       if: steps.download.outputs.status == 'success'
       uses: ophub/flippy-openwrt-actions@main
