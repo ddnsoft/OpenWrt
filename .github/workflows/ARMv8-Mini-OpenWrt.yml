@@ -251,9 +251,6 @@ jobs:
     needs: [Build]
     runs-on: ubuntu-22.04
 
-    permissions:
-        contents: write 
-
     env:
       COMMIT_AUTHOR: ${{ needs.Build.outputs.COMMIT_AUTHOR }}
       COMMIT_DATE: ${{ needs.Build.outputs.COMMIT_DATE }}
