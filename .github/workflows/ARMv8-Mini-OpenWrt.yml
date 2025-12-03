@@ -286,20 +286,14 @@ jobs:
         echo "DATE=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         echo "DATE1=$(date +"%y.%m.%d")" >> $GITHUB_ENV
 
-    - name: Debug show rootfs path
-      if: steps.download.outputs.status == 'success'
+    - name: Debug Actions Folder
       run: |
-        echo "当前工作目录："
-        pwd
+        echo "=== Listing GitHub Actions download directory ==="
+        ls -R /home/runner/work/_actions || true
+
         echo
-        echo "列出当前目录："
-        ls -al
-        echo
-        echo "递归查看 openwrt/bin/targets 目录："
-        ls -R openwrt/bin || echo "openwrt/bin 不存在"
-        echo
-        echo "用 find 搜索 rootfs.tar.gz："
-        find . -maxdepth 6 -type f -name "*rootfs.tar.gz" -print || echo "未找到 rootfs.tar.gz"
+        echo "=== Try locate flippy-action ==="
+        find /home/runner/work/_actions -maxdepth 5 -type f -name "openwrt_flippy.sh" -print || echo "Flippy script NOT FOUND!"
 
     - name: Package OpenWrt Firmware
       if: steps.download.outputs.status == 'success'
