@@ -42,8 +42,10 @@ git clone --depth=1 https://github.com/Jason6111/luci-app-netdata package/luci-a
 ##git clone --depth=1 -b main https://github.com/xiaorouji/openwrt-passwall-packages package/openwrt-passwall
 ##git clone --depth=1 -b main https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
 ##git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall2 package/luci-app-passwall2
-git clone --depth=1 -b main https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/openwrt-passwall
-git clone --depth=1 -b main https://github.com/Openwrt-Passwall/openwrt-passwall package/luci-app-passwall
+grep -q "Openwrt-Passwall/openwrt-passwall-packages" feeds.conf.default || \
+  echo "src-git passwall_packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main" >> feeds.conf.default
+grep -q "Openwrt-Passwall/openwrt-passwall.git" feeds.conf.default || \
+  echo "src-git passwall_luci https://github.com/Openwrt-Passwall/openwrt-passwall.git;main" >> feeds.conf.default
 git_sparse_clone master https://github.com/vernesong/OpenClash luci-app-openclash
 
 # Update Go Version
