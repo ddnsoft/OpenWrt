@@ -49,7 +49,7 @@ grep -q "Openwrt-Passwall/openwrt-passwall.git" feeds.conf.default || \
 git_sparse_clone master https://github.com/vernesong/OpenClash luci-app-openclash
 
 # Update Go Version
-rm -rf feeds/packages/lang/golang && git clone -b 25.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
+rm -rf feeds/packages/lang/golang && git clone -b 26.x https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
 
 # Themes
 git clone --depth=1 -b 18.06 https://github.com/kiddin9/luci-theme-edge package/luci-theme-edge
