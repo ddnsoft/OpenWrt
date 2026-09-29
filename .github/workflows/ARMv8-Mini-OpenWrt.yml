@@ -111,7 +111,14 @@ jobs:
         COMMIT_HASH=$(git show -s --date=short --format="hash: %H")
         echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
         echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_OUTPUT
-   
+
+    - name: Remove HelloWorld Feed
+      run: |
+        cd $OPENWRT_PATH
+        sed -i '/helloworld/d' feeds.conf.default
+        sed -i '/helloworld/d' feeds.conf 2>/dev/null || true
+        rm -rf feeds/helloworld
+    
     - name: Prepare /mnt for heavy directories
       run: |
         echo "🧹 Cleaning and preparing /mnt..."
